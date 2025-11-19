@@ -6,7 +6,7 @@ pipeline{
   triggers{
     githubPush()
   }
-  enviroment{
+  environment{
       POM="playArreglos/pom.xml"
   }
   stages{
@@ -15,14 +15,14 @@ pipeline{
         git url:'https://github.com/abeljunior717/PlayArreglos.git', branch:'main'
       }
     }
-    stage ('Compilacion'){
+    stage('Compilacion'){
       steps{
-        sh 'mvn -f $POM -B'
+        sh 'mvn -f $POM -B package'
       }
     }
     stage ('Prueba'){
       steps{
-        sh 'mvn -f $POM -B'
+        sh 'mvn -f $POM -B test'
       }
       post{
         always{
@@ -30,7 +30,7 @@ pipeline{
         }
       }
     }
-    stage ('Empaquetado'){
+    stage('Empaquetado'){
       steps{
         archiveArtifacts artifacts: 'playArreglos/target/*.jar',fingerprint:true
       }
